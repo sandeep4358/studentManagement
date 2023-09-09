@@ -31,10 +31,7 @@ public class StudentController {
     public ResponseEntity getListOfStudents(){
         log.info("enter :: " );
         Object obj = null;
-
-           obj =  repository.findAll();
-
-
+        obj =  repository.findAll();
         return new ResponseEntity(obj,HttpStatus.FOUND);
     }
 
@@ -43,7 +40,7 @@ public class StudentController {
         log.info("enter");
 
         /**
-         * will create the studnet from the request object.
+         * will create the student from the request object.
          */
         Student student = Student.builder().name(requestObject.getName()).rollNumber(requestObject.getRollNumber()).build();
 
