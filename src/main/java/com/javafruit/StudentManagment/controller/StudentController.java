@@ -49,7 +49,7 @@ public class StudentController {
             repository.save(student);
             responseEntity =  new ResponseEntity<>(ResponseObject.builder().data(student).build() , HttpStatus.ACCEPTED);
         }else
-           throw new StudentAlreadyPresent("Student is already Present with roll no "+ student.getRollNumber());
+            throw new StudentAlreadyPresent("Student is already Present with roll no "+ student.getRollNumber());
 
         return responseEntity;
     }
