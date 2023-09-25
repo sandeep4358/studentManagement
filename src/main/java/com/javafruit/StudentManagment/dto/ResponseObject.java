@@ -1,15 +1,16 @@
 package com.javafruit.StudentManagment.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Setter
 @ToString
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ResponseObject {
+    private int count;
     private Object data;
+
 }

@@ -9,6 +9,7 @@ import com.javafruit.StudentManagment.service.StudentService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -74,5 +75,30 @@ public class StudentController {
         log.info("enter");
         service.addListOfStudents(requestObject.getListOfStudent());
         return  new ResponseEntity("Student saved successfully",HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping
+    @RequestMapping("/fetchSortedResult/{sortedString}")
+
+    public ResponseEntity getTheSortedList(@PathVariable String sortedString){
+        log.info("Entered");
+        List<Student> studentList = service.fetchTheSortedList(sortedString);
+        return new ResponseEntity<>(new ResponseObject(Integer.parseInt(studentList.stream().count()+""),studentList),HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping
+    @RequestMapping("/fetchPaginatedResult/{offSet}/{pageSize}")
+    public ResponseEntity getPaginatedResult(@PathVariable String offSet,@PathVariable String pageSize){
+        log.info("Entered");
+        Page<Student> students = service.fetchPaginatedResult(offSet, pageSize);
+        return  new ResponseEntity<>(new ResponseObject( students.getSize(),students),HttpStatus.ACCEPTED);
+    }
+
+ @GetMapping
+    @RequestMapping("/fetchPaginateSorted/{offSet}/{pageSize}/{sortingString}")
+    public ResponseEntity getPaginatedSortedResult(@PathVariable String offSet,@PathVariable String pageSize,@PathVariable String sortingString){
+        log.info("Entered");
+        Page<Student> students = service.fetchSorteAndPaginatedResult(offSet, pageSize,sortingString);
+        return  new ResponseEntity<>(new ResponseObject(students.getSize(),students),HttpStatus.ACCEPTED);
     }
 }

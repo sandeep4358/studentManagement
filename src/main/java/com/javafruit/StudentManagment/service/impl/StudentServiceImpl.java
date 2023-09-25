@@ -10,6 +10,9 @@ import com.javafruit.StudentManagment.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,7 +43,8 @@ public class StudentServiceImpl implements StudentService {
         try{
                 repository.saveAll(studentList);
 
-                bookRepository.save(book1);
+                //bookRepository.save(book1);
+                createBook(book1);
 
         }catch (Exception ex){
                 throw new StudentException(ex.getMessage());
@@ -88,4 +92,27 @@ public class StudentServiceImpl implements StudentService {
         public void deleteBook(Long id) {
                 bookRepository.deleteById(id);
         }
-    }
+
+        /**
+         * Sorted the record Based upon the provided sorting String.
+         * @param sortedString
+         * @return
+         */
+        @Override
+        public List<Student> fetchTheSortedList(String sortedString) {
+                return repository.findAll(Sort.by(sortedString));
+        }
+
+        @Override
+        public Page<Student> fetchSorteAndPaginatedResult(String offset, String pageSize, String sortedString) {
+                Page<Student> records = repository.findAll(PageRequest.of(Integer.parseInt(offset), Integer.parseInt(pageSize)).withSort(Sort.by(sortedString)));
+                return records;
+        }
+
+        @Override
+        public Page<Student> fetchPaginatedResult(String offset, String pageSize) {
+                Page<Student> records = repository.findAll(PageRequest.of(Integer.parseInt(offset), Integer.parseInt(pageSize)));
+                return records;
+
+        }
+}
