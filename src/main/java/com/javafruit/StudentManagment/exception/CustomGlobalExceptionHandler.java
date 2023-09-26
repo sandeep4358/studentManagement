@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class StudentExceptionHandler {
+public class CustomGlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity studentNotFound(StudentNotFoundException exception){
             return new ResponseEntity(exception.getMessage(), HttpStatus.EXPECTATION_FAILED);
@@ -20,6 +20,11 @@ public class StudentExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity generalStudentException(StudentException exception){
+        return new ResponseEntity(exception.getMessage(), HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity generalStudentException(UserAlreadyExistException exception){
         return new ResponseEntity(exception.getMessage(), HttpStatus.EXPECTATION_FAILED);
     }
 
