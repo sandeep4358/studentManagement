@@ -1,7 +1,7 @@
 package com.javafruit.StudentManagment.exception;
 
 public class StudentNotFoundException extends  RuntimeException{
-    StudentNotFoundException(String message){
+    public StudentNotFoundException(String message){
         super(message);
     }
 }

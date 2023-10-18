@@ -17,4 +17,6 @@ public class RequestObject {
     private String rollNumber;
     private List<Student> listOfStudent;
 
+    private StudentDto student;
+
 }

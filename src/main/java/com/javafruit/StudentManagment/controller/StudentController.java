@@ -2,7 +2,9 @@ package com.javafruit.StudentManagment.controller;
 
 import com.javafruit.StudentManagment.dto.RequestObject;
 import com.javafruit.StudentManagment.dto.ResponseObject;
+import com.javafruit.StudentManagment.dto.StudentDto;
 import com.javafruit.StudentManagment.exception.StudentAlreadyPresent;
+import com.javafruit.StudentManagment.exception.StudentNotFoundException;
 import com.javafruit.StudentManagment.model.Student;
 import com.javafruit.StudentManagment.repo.StudentRepository;
 import com.javafruit.StudentManagment.service.StudentService;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +39,20 @@ public class StudentController {
         return new ResponseEntity(obj,HttpStatus.FOUND);
     }
 
+    @GetMapping
+    @RequestMapping("/fetchById/{id}")
+    public ResponseEntity getStudents(@PathVariable String id){
+        log.info("enter :: " );
+        Object obj = null;
+        if(id == "" ||id == null){
+            throw new StudentNotFoundException("Student record not found with student id :: "+id);
+        }
+        Optional<Student> optionalRecord = repository.findById(Long.parseLong(id));
+        Student student = optionalRecord.orElseThrow(() -> new StudentNotFoundException("Student not found exception :: "));
+
+        return new ResponseEntity(new ResponseObject(0,student,"00"),HttpStatus.FOUND);
+    }
+
     @PostMapping(value= "/save")
     public ResponseEntity saveStudentDetails(@RequestBody RequestObject requestObject){
         log.info("enter");
@@ -49,8 +66,11 @@ public class StudentController {
         if(checkTheRedendencyOfStudent(student.getRollNumber())){
             repository.save(student);
             responseEntity =  new ResponseEntity<>(ResponseObject.builder().data(student).build() , HttpStatus.ACCEPTED);
-        }else
+        }else{
+            log.error("Student is already Present with roll no "+ student.getRollNumber());
             throw new StudentAlreadyPresent("Student is already Present with roll no "+ student.getRollNumber());
+
+        }
 
         return responseEntity;
     }
@@ -83,7 +103,7 @@ public class StudentController {
     public ResponseEntity getTheSortedList(@PathVariable String sortedString){
         log.info("Entered");
         List<Student> studentList = service.fetchTheSortedList(sortedString);
-        return new ResponseEntity<>(new ResponseObject(Integer.parseInt(studentList.stream().count()+""),studentList),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseObject(Integer.parseInt(studentList.stream().count()+""),studentList,"00"),HttpStatus.ACCEPTED);
     }
 
     @GetMapping
@@ -91,7 +111,7 @@ public class StudentController {
     public ResponseEntity getPaginatedResult(@PathVariable String offSet,@PathVariable String pageSize){
         log.info("Entered");
         Page<Student> students = service.fetchPaginatedResult(offSet, pageSize);
-        return  new ResponseEntity<>(new ResponseObject( students.getSize(),students),HttpStatus.ACCEPTED);
+        return  new ResponseEntity<>(new ResponseObject( students.getSize(),students,"00"),HttpStatus.ACCEPTED);
     }
 
  @GetMapping
@@ -99,6 +119,23 @@ public class StudentController {
     public ResponseEntity getPaginatedSortedResult(@PathVariable String offSet,@PathVariable String pageSize,@PathVariable String sortingString){
         log.info("Entered");
         Page<Student> students = service.fetchSorteAndPaginatedResult(offSet, pageSize,sortingString);
-        return  new ResponseEntity<>(new ResponseObject(students.getSize(),students),HttpStatus.ACCEPTED);
+        return  new ResponseEntity<>(new ResponseObject(students.getSize(),students,"00"),HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/updateStudent")
+    public ResponseEntity upadteStudent(@RequestBody RequestObject requestObject){
+     log.info("Enter");
+       ResponseObject responseObject = new ResponseObject();
+        StudentDto studentDto = service.updateStudent(requestObject.getStudent());
+
+        return  new ResponseEntity(new ResponseObject(0,studentDto,"00"), HttpStatus.ACCEPTED);
+
+    }
+
+    @PatchMapping("/updateRecordByFields/{id}")
+    public ResponseEntity updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
+        log.info("enter");
+        StudentDto studentDto = service.updateRecordByFields(id, fields);
+        return  new ResponseEntity(new ResponseObject(0,studentDto,"00"), HttpStatus.ACCEPTED);
     }
 }
