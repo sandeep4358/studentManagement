@@ -94,22 +94,21 @@
 			"response": []
 		},
 		{
-			"name": "Fetch Product Details",
+			"name": "FetchStudent Record",
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:9001/productInventory/product/fetchProductDetails/",
+					"raw": "http://localhost:8080/student/fetchById/11",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9001",
+					"port": "8080",
 					"path": [
-						"productInventory",
-						"product",
-						"fetchProductDetails",
-						""
+						"student",
+						"fetchById",
+						"11"
 					]
 				}
 			},
@@ -165,14 +164,16 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/student/fetchSortedResult/name",
+					"raw": "localhost:8080/student/fetchPaginatedResult/1/10/name",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"student",
-						"fetchSortedResult",
+						"fetchPaginatedResult",
+						"1",
+						"10",
 						"name"
 					]
 				}
@@ -197,17 +198,76 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/student/fetchPaginatedResult/1/10/name",
+					"raw": "localhost:8080/student/fetchPaginateSorted/1/10/name",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"student",
-						"fetchPaginatedResult",
+						"fetchPaginateSorted",
 						"1",
 						"10",
 						"name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateStudent",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"student\": {\r\n        \"id\": 11,\r\n        \"name\": \"Aditi Desai\",\r\n        \"rollNumber\": \"98765\",\r\n        \"age\": 18,\r\n        \"parentName\": \"Rahul Desai\",\r\n        \"parentContact\": \"rahul.desai@example.com\",\r\n        \"studentClass\": \"Grade 11\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/student/updateStudent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"student",
+						"updateStudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Field wise update of student record",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"age\": 19\r\n }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/student/updateRecordByFields/11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"student",
+						"updateRecordByFields",
+						"11"
 					]
 				}
 			},
