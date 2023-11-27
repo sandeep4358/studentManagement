@@ -19,6 +19,9 @@ public class User {
     private String name;
     @Column(unique = true)
     private String email;
+
+    @Version
+    private Long version;
     private String about;
     private String password;
 

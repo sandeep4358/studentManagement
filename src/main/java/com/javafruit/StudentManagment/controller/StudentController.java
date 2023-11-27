@@ -8,9 +8,11 @@ import com.javafruit.StudentManagment.exception.StudentNotFoundException;
 import com.javafruit.StudentManagment.model.Student;
 import com.javafruit.StudentManagment.repo.StudentRepository;
 import com.javafruit.StudentManagment.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -42,19 +44,20 @@ public class StudentController {
     @GetMapping
     @RequestMapping("/fetchById/{id}")
     public ResponseEntity getStudents(@PathVariable String id){
-        log.info("enter :: " );
+        log.info(">> StudentController : getStudent : /fetchById/{id}" );
         Object obj = null;
         if(id == "" ||id == null){
-            throw new StudentNotFoundException("Student record not found with student id :: "+id);
+            log.info(">> StudentController : getStudent : Student id is Null " );
+            throw new StudentNotFoundException("Student id is Null :: ");
         }
-        Optional<Student> optionalRecord = repository.findById(Long.parseLong(id));
-        Student student = optionalRecord.orElseThrow(() -> new StudentNotFoundException("Student not found exception :: "));
+
+        StudentDto student = service.getStudentById(Long.parseLong(id));
 
         return new ResponseEntity(new ResponseObject(0,student,"00"),HttpStatus.FOUND);
     }
 
     @PostMapping(value= "/save")
-    public ResponseEntity saveStudentDetails(@RequestBody RequestObject requestObject){
+    public ResponseEntity saveStudentDetails(@Valid @RequestBody RequestObject requestObject){
         log.info("enter");
 
         /**
@@ -92,7 +95,7 @@ public class StudentController {
     @PostMapping
     @RequestMapping("/saveList")
     public ResponseEntity saveStudents(@RequestBody RequestObject requestObject) {
-        log.info("enter");
+        log.info(">> enter");
         service.addListOfStudents(requestObject.getListOfStudent());
         return  new ResponseEntity("Student saved successfully",HttpStatus.ACCEPTED);
     }
@@ -123,8 +126,10 @@ public class StudentController {
     }
 
     @PutMapping("/updateStudent")
-    public ResponseEntity upadteStudent(@RequestBody RequestObject requestObject){
+    public ResponseEntity upadteStudent(@Valid @RequestBody RequestObject requestObject){
      log.info("Enter");
+
+
        ResponseObject responseObject = new ResponseObject();
         StudentDto studentDto = service.updateStudent(requestObject.getStudent());
 
@@ -134,7 +139,7 @@ public class StudentController {
 
     @PatchMapping("/updateRecordByFields/{id}")
     public ResponseEntity updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
-        log.info("enter");
+        log.info(">> StudentController : updateProductFields : /updateRecordByFields/{id}" );
         StudentDto studentDto = service.updateRecordByFields(id, fields);
         return  new ResponseEntity(new ResponseObject(0,studentDto,"00"), HttpStatus.ACCEPTED);
     }

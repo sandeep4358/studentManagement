@@ -17,7 +17,7 @@ public interface StudentService {
 
     public StudentDto updateRecordByFields(int id , Map<String,Object> fields);
     void deleteStudent(int studentId);
-    Student getStudentById(int studentId);
+    StudentDto getStudentById(Long studentId);
     List<Student> getAllStudents();
 
     public List<Book> getAllBooks() ;
