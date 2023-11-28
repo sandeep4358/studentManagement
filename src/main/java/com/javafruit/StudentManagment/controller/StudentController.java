@@ -19,6 +19,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +41,16 @@ public class StudentController {
         obj =  repository.findAll();
         return new ResponseEntity(obj,HttpStatus.FOUND);
     }
+
+    @GetMapping
+    @RequestMapping("/welcome")
+    public ResponseEntity getGreetings(){
+        log.info("enter :: " );
+        Object obj = null;
+
+        return new ResponseEntity("Welcome to the MPS school !! " + new Date(),HttpStatus.FOUND);
+    }
+
 
     @GetMapping
     @RequestMapping("/fetchById/{id}")

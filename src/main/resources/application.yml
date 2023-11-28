@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /MPSSchool
 #server:
 #  port: 9001
 spring:
