@@ -27,7 +27,7 @@ management:
 
 logging:
   charset:
-    file: C:\Users\sande\OneDrive\Desktop\log\elk-stack.log
+    file: /opt/tomcat/apache-tomcat-10.1.16/logs/ska-app.log
   level:
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
