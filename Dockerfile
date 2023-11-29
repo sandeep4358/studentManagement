@@ -9,7 +9,7 @@ EXPOSE 8080
 
 #now copy your project in that folder
 
-COPY ./target/StudentManagment.war  /usr/local/tomcat/webapps/StudentManagment.war
+COPY ./target/StudentManagment.war  /usr/local/tomcat/webapps/ROOT.war
 
 #Transfer our WAR
 
