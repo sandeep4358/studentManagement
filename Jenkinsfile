@@ -1,16 +1,22 @@
 pipeline{
     agent any
     stages{
-        stage('build'){
+        stage('Build'){
             steps{
+                echo 'Building stage'
+                echo "Running ${env.BUILD_NUMBER} or ${env.JENKINS_URL}"
                 sh 'mvn -DskipTests clean package'
             }
         }
-    }
-    stages{
-        stage('build'){
+        stage('Test'){
             steps{
+                echo 'Test'
                 sh 'mvn test'
+            }
+        }
+        stage('Deploying'){
+            steps{
+                echo 'Deploying'
             }
         }
     }
