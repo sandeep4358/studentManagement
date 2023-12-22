@@ -19,10 +19,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/student")
@@ -147,6 +144,13 @@ public class StudentController {
         return  new ResponseEntity(new ResponseObject(0,studentDto,"00"), HttpStatus.ACCEPTED);
 
     }
+
+    /**
+     * It is basically a patch request that will update only the file tha is needed to be updated.
+     * @param id
+     * @param fields
+     * @return
+     */
 
     @PatchMapping("/updateRecordByFields/{id}")
     public ResponseEntity updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
