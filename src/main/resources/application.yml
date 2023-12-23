@@ -14,7 +14,7 @@ spring:
       ddl-auto: update
     show-sql: true
 #----------------below logging will activate the jpa transactional log
-#actuator endpoint managemnet
+#actuator endpoint management
 management:
   endpoint:
     shutdown:
@@ -27,7 +27,7 @@ management:
 
 logging:
   charset:
-    file: /opt/tomcat/apache-tomcat-10.1.16/logs/ska-app.log
+    file: /opt/tomcat/logs/ska-app.log
   level:
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG

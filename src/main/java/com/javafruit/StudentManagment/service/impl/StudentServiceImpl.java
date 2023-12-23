@@ -42,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,readOnly = true)
-        @Cacheable(value = "myCache", keyGenerator = "myCacheKeyGenerator", unless="#result == null")  // added to the
+       // @Cacheable(value = "myCache", keyGenerator = "myCacheKeyGenerator", unless="#result == null")  // added to the
         public void addListOfStudents(List<Student> studentList){
         log.info("enter");
         Book book1 = new Book();
@@ -61,7 +61,7 @@ public class StudentServiceImpl implements StudentService {
         }
         @Transactional
         @Override
-        @CachePut(value = "myCache", key = "#studentDto.id", unless="#result == null")  // added to the
+       // @CachePut(value = "myCache", key = "#studentDto.id", unless="#result == null")  // added to the
         public StudentDto updateStudent(StudentDto studentDto) {
 
                 //Student build = Student.builder().age(student.getAge()).name(student.getName()).age(student.getAge()).parentContact(student.getParentContact()).parentName(student.getParentName()).rollNumber(student.getRollNumber()).build();
@@ -133,7 +133,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         @Override
-        @Cacheable(value = "myCache", key = "#studentId", unless="#result == null")  // added to the
+        //@Cacheable(value = "myCache", key = "#studentId", unless="#result == null")  // added to the
         public StudentDto getStudentById(Long studentId) {
 
                 Optional<Student> studentOptional = repository.findById(studentId);
@@ -184,7 +184,7 @@ public class StudentServiceImpl implements StudentService {
          * @return
          */
         @Override
-        @Cacheable(value = "myCache", keyGenerator = "myCacheKeyGenerator", unless="#result == null")  // added to the
+       // @Cacheable(value = "myCache", keyGenerator = "myCacheKeyGenerator", unless="#result == null")  // added to the
         public List<Student> fetchTheSortedList(String sortedString) {
                 return repository.findAll(Sort.by(sortedString));
         }
