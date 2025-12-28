@@ -1,0 +1,36 @@
+version: "3.1"
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 192.168.0.102:2181
+
+      # Kafka will listen on all interfaces
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+
+      # Kafka will advertise the HOST IP (important)
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.0.102:9092
+
+      # Required by wurstmeister image
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      # Single broker setup
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
